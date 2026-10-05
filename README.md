@@ -23,6 +23,8 @@ Ports (décalés volontairement pour éviter les conflits avec un moteur déjà 
 | Neo4j — interface web | 17474 |
 | Neo4j — Bolt (driver) | 17687 |
 
+MongoDB utilise la branche 7.0 : MongoDB 8.0+ rencontre un problème de démarrage avec les noyaux Linux 6.19 et plus récents.
+
 Identifiants de développement : `pixelhub` / `pixelhub_dev` (Neo4j : utilisateur `neo4j`).
 Les ports se changent dans le fichier `.env` ; si vous en changez un, adaptez aussi `appsettings.json`.
 

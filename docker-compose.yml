@@ -33,7 +33,7 @@ services:
   # MongoDB — catalogue de jeux (séance 2)
   # ---------------------------------------------------------------
   mongo:
-    image: mongo:8
+    image: mongo:7.0
     container_name: pixelhub-mongo
     environment:
       MONGO_INITDB_ROOT_USERNAME: pixelhub

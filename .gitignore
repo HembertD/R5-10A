@@ -6,5 +6,6 @@ obj/
 .vs/
 .idea/
 *.swp
+.env
 # Notes personnelles du TP
 notes.md
