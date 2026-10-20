@@ -31,3 +31,12 @@ Accept: application/json
 ### Séance 2 — agrégation : note moyenne par genre
 GET {{host}}/games/stats
 Accept: application/json
+
+
+### Séance 4 - Neo4j : amis
+GET {{host}}/social/Krayz/friends
+Accept: application/json
+
+### Séance 4 - Neo4j : recommandations
+GET {{host}}/social/Nova/recommendations
+Accept: application/json
