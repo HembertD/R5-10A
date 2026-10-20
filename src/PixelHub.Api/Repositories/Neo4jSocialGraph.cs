@@ -65,4 +65,35 @@ public class Neo4jSocialGraph : ISocialGraph
                 new FriendSuggestion(r["pseudo"].As<string>(), r["communs"].As<int>()));
         });
     }
+        // MERGE partout : rejouer la projection d'un même achat ne crée aucun doublon (mission 4, resynchronisation).
+    // MERGE et non MATCH sur le joueur : un joueur créé par POST /players n'existe pas encore dans le graphe,
+    // et un MATCH qui ne trouve rien ne lève aucune erreur — l'achat disparaîtrait du graphe en silence.
+    public async Task AddOwnershipAsync(string pseudo, string titre, int annee)
+    {
+        await using var session = _driver.AsyncSession();
+
+        await session.ExecuteWriteAsync(async tx =>
+        {
+            await tx.RunAsync(
+                @"MERGE (j:Joueur {pseudo: $pseudo})
+                  MERGE (g:Jeu {titre: $titre})
+                  MERGE (j)-[r:POSSEDE]->(g)
+                  ON CREATE SET r.depuis = $annee",
+                new { pseudo, titre, annee });
+        });
+    }
+    public async Task<List<string>> GetOwnedGamesAsync(string pseudo)
+    {
+        await using var session = _driver.AsyncSession();
+
+        return await session.ExecuteReadAsync(async tx =>
+        {
+            var cursor = await tx.RunAsync(
+                @"MATCH (:Joueur {pseudo: $pseudo})-[:POSSEDE]->(j:Jeu)
+                  RETURN j.titre AS titre ORDER BY titre",
+                new { pseudo });
+
+            return await cursor.ToListAsync(r => r["titre"].As<string>());
+        });
+    }
 }
